@@ -1,0 +1,41 @@
+import { useState, useEffect } from "react";
+import IProduct from "@/components/products/types";
+
+const useCart = () => {
+  const [cart, setCart] = useState<IProduct[]>(
+    JSON.parse(localStorage.getItem("cart")!) || []
+  );
+
+  useEffect(() => {
+    // para que aparezca el carrito cuando se logue el usuario
+    const storedCart = localStorage.getItem("cart");
+    if (storedCart) {
+      setCart(JSON.parse(storedCart));
+    }
+  }, []);
+
+  useEffect(() => {
+    // Guardar carrito en local storage
+    localStorage.setItem("cart", JSON.stringify(cart));
+  }, [cart]);
+
+  const clearCart = () => {
+    localStorage.removeItem("cart");
+    setCart([]);
+  };
+
+  const saveCartForUser = (userEmail: string) => {
+    localStorage.setItem(`cart_${userEmail}`, JSON.stringify(cart));
+  };
+
+  const loadCartForUser = (userEmail: string) => {
+    const storedCart = localStorage.getItem(`cart_${userEmail}`);
+    if (storedCart) {
+      setCart(JSON.parse(storedCart));
+    }
+  };
+
+  return { cart, setCart, clearCart, saveCartForUser, loadCartForUser };
+};
+
+export default useCart;
