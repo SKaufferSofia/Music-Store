@@ -1,12 +1,4 @@
-import {
-  Column,
-  Entity,
-  JoinColumn,
-  ManyToMany,
-  ManyToOne,
-  PrimaryGeneratedColumn,
-} from "typeorm";
-import { Order } from "./Order";
+import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 import { Category } from "./Category";
 
 @Entity({ name: "products" })
@@ -29,10 +21,6 @@ export class Product {
   @Column("text", { array: true })
   image: string[];
 
-  @Column()
-  categoryId: number;
-
   @ManyToOne(() => Category, (category) => category.products)
-  @JoinColumn({ name: "categoryId" })
   category: Category;
 }

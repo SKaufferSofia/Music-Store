@@ -1,3 +1,4 @@
+import { IProduct } from "../dtos/productsDto";
 import { Product } from "../entities/Product";
 import { ProductRepository } from "../repositories/product.repository";
 
@@ -21,4 +22,10 @@ export const getProductId = async (itemId: number): Promise<Product | null> => {
     id: itemId,
   });
   return item;
+};
+
+export const addProductService = async (product: IProduct) => {
+  const newProduct = ProductRepository.create(product);
+  await ProductRepository.save(newProduct);
+  return newProduct;
 };
